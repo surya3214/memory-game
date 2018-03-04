@@ -1,0 +1,32 @@
+// styles for the score panel
+
+.score-panel {
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+.score-panel .stars {
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+  margin: 0 5px 0 0;
+}
+
+.score-panel .stars li {
+  list-style: none;
+  display: inline-block;
+}
+
+.score-panel .restart {
+  float: right;
+  cursor: pointer;
+}
+
+.fa-star {
+  color: rgb(226, 194, 11);
+}
+
+.timer {
+  display: inline-block;
+  margin: 0 1rem;
+}
