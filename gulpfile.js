@@ -18,7 +18,7 @@ const js_p_dist = 'pre-dist/js',
       css_p_dist = 'pre-dist/css',
       jade_p_dist = 'pre-dist'
 
-let build = ['jade', 'build-css', 'jshint']
+let preBuild = ['jade', 'build-css', 'jshint']
 
 gulp.task('jade', function() {
   return gulp.src(jade_src)
@@ -59,22 +59,27 @@ gulp.task('useref', function() {
     // minify css files
     .pipe(gulpIf('*.css', cssnano()))
     .pipe(gulp.dest('dist/'))
+    .pipe(browserSync.reload({ stream: true }))
 })
 
-gulp.task('clean:dist', function() {
-  return del.sync(['pre-dist', 'dist'])
+gulp.task('clean-dist', function() {
+  return del.sync('dist')
 })
 
-gulp.task('watch', function() {
-  gulp.watch(jade_src, ['jade'])
-  gulp.watch(js_src, ['jshint'])
-  gulp.watch(css_src, ['build-css'])
-  gulp.watch('dist/*.html', ['useref'])
-  gulp.watch('dist/*', browserSync.reload)
+gulp.task('clean-predist', function() {
+  return del.sync('pre-dist')
 })
 
-gulp.task('build', build)
+gulp.task('watch', function(callback) {
+  gulp.watch([js_src, jade_src, css_src], ['build'])
+})
+
+gulp.task('pre-build', preBuild)
+
+gulp.task('build', function(callback) {
+  runSequence('pre-build', 'useref', 'clean-predist', callback)
+})
 
 gulp.task('default', function(callback) {
-  runSequence('clean:dist', 'build', 'useref', ['browserSync', 'watch'], callback)
+  runSequence('clean-dist', 'build', ['browserSync', 'watch'], callback)
 })
