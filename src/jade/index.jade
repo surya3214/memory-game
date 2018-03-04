@@ -12,8 +12,31 @@ html(lang="en")
     | 
     | <!-- endbuild -->
   body
-    div Hello
-    div How are you?
+    .container
+      header
+        h1 Memory Game
+      section.score-panel
+        ul.stars
+          for i in new Array(3)
+            li
+              i.fa.fa-star
+        span.moves 0
+        .timer
+        .restart(onclick="startGame()")
+          i.fa.fa-repeat
+      ul.deck#card-deck
+        - types = {'diamond': 'fa-diamond', 'plane': 'fa-paper-plane-o', 'anchor': 'fa-anchor', 'bolt': 'fa-bolt', 'cube': 'fa-cube', 'bomb': 'fa-bomb', 'leaf': 'fa-leaf', 'bicycle': 'fa-bicycle'}
+        for val, index in types
+          li.card(type=index)
+            i.fa(class=val)
+      #popup1.overlay
+        .popup
+          h2 Congratulations
+          a.close(href="#")
+          .content-1 Congratulations, you're a winner
+          .content-2
+            p You made #[span#finalMove] moves
+          button#play-again(onclick="playAgain()") Play Again!
   | 
   | <!-- build:js js/main.min.js -->
   script(src="js/app.js" type="text/javascript")
