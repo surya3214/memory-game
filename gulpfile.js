@@ -14,14 +14,18 @@ const js_src = 'src/js/**/*.js',
       css_src = 'src/css/**/*.scss',
       jade_src = 'src/jade/**/*.jade'
 
-const js_dist = 'dist/js/',
-      css_dist = 'dist/css/',
-      jade_dist = 'dist/'
+const js_p_dist = 'pre-dist/js',
+      css_p_dist = 'pre-dist/css',
+      jade_p_dist = 'pre-dist'
+
+let build = ['jade', 'build-css', 'jshint']
 
 gulp.task('jade', function() {
   return gulp.src(jade_src)
-    .pipe(jade())
-    .pipe(gulp.dest(jade_dist))
+    .pipe(jade({
+      pretty: true
+    }))
+    .pipe(gulp.dest(jade_p_dist))
 })
 
 gulp.task('jshint', function() {
@@ -30,13 +34,13 @@ gulp.task('jshint', function() {
       asi: true
     }))
     .pipe(jshint.reporter('jshint-stylish'))
-    .pipe(gulp.dest(js_dist))
+    .pipe(gulp.dest(js_p_dist))
 })
 
 gulp.task('build-css', function() {
   return gulp.src(css_src)
     .pipe(sass())
-    .pipe(gulp.dest(css_dist))
+    .pipe(gulp.dest(css_p_dist))
 })
 
 gulp.task('browserSync', function() {
@@ -48,17 +52,17 @@ gulp.task('browserSync', function() {
 })
 
 gulp.task('useref', function() {
-  return gulp.src('dist/*.html')
+  return gulp.src('pre-dist/*.html')
     .pipe(useref())
     // minifies only if it a js file
     .pipe(gulpIf('*.js', uglify()))
     // minify css files
     .pipe(gulpIf('*.css', cssnano()))
-    .pipe(gulp.dest('dist'))
+    .pipe(gulp.dest('dist/'))
 })
 
 gulp.task('clean:dist', function() {
-  return del.sync('dist')
+  return del.sync(['pre-dist', 'dist'])
 })
 
 gulp.task('watch', function() {
@@ -69,6 +73,8 @@ gulp.task('watch', function() {
   gulp.watch('dist/*', browserSync.reload)
 })
 
+gulp.task('build', build)
+
 gulp.task('default', function(callback) {
-  runSequence('clean:dist', ['jade', 'build-css', 'jshint'], 'useref', ['browserSync', 'watch'], callback)
+  runSequence('clean:dist', 'build', 'useref', ['browserSync', 'watch'], callback)
 })

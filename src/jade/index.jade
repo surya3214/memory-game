@@ -1,9 +1,20 @@
-html
+doctype html
+html(lang="en")
   head
-    title Surya
+    meta(charset="utf-8")
+    title Surya's Memory Game
+    link(rel="stylesheet prefetch", href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css")
+    link(rel="stylesheet prefetch", href="https://fonts.googleapis.com/css?family=Coda")
+    link(rel="stylesheet prefetch", href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah|Permanent+Marker")
+    | 
+    | <!-- build:css css/styles.min.css -->
+    link(rel="stylesheet", href="css/app.css")
+    | 
+    | <!-- endbuild -->
   body
-    h1 Jade sample
-    h2 Surya
-    h3 Woah!
-    h4 What's up!
-    h5 Yeahhhhhhhhhh!
+    div Hello
+  | 
+  | <!-- build:js js/main.min.js -->
+  script(src="js/app.js" type="text/javascript")
+  | 
+  | <!-- endbuild -->
