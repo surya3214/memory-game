@@ -31,7 +31,8 @@ gulp.task('jade', function() {
 gulp.task('jshint', function() {
   return gulp.src(js_src)
     .pipe(jshint({
-      asi: true
+      asi: true,
+      esversion: 6
     }))
     .pipe(jshint.reporter('jshint-stylish'))
     .pipe(gulp.dest(js_p_dist))
@@ -55,7 +56,7 @@ gulp.task('useref', function() {
   return gulp.src('pre-dist/*.html')
     .pipe(useref())
     // minifies only if it a js file
-    .pipe(gulpIf('*.js', uglify()))
+    // .pipe(gulpIf('*.js', uglify())) TODO: check why uglify() is not working
     // minify css files
     .pipe(gulpIf('*.css', cssnano()))
     .pipe(gulp.dest('dist/'))
